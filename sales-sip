@@ -1,0 +1,178 @@
+openapi: 3.0.0
+info:
+  description: This is to update SIP records in salesforce
+  version: 1.0.0
+  title: sales_sip
+  contact:
+    name: Salesforce Sales Cloud
+    email: rakesh.allam@maersk.com
+  license:
+    name: Maersk
+  x-proxy-name: sales_sip
+  x-availability-status: General Availability
+  x-oas-href: 
+  
+  
+paths:
+  '/salesforce/main/sip/{sipid}':
+    patch:
+      summary: This is to update SIP records in salesforce
+      parameters:
+        - in: path
+          name: sipid
+          description: 'Salesforce SIP record Id, example a0B5700001hgxTNEAY'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/patchSIPRequestBody'
+        description: SIP details
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/patchSIPResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: Not Found	
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+servers:
+  - url: '/Maersk-SFDC-Sales/sales_sip/1.0.0'
+components:
+  schemas:
+    patchSIPRequestBody:
+      type: object
+      properties:
+        E2E_Volume_Actual_FFE__c:
+          type: number
+          description: >-
+            E2E Counts- Origin = 1, Container = 1, Destination = 1 E2E
+            Categories for SIP crediting- - Door-Door- credited as 3 (SD-SD) -
+            Door-Port- credited as 2 (SD-CY) - Port-Door- credited as 2 (CY-SD)
+            - Port-Port- credited as 1 (CY-CY)
+          example: 2
+        Landside_Trans_VP_Actual_FFE_QTR__c:
+          type: number
+          description: >-
+            LT FFE + VP FFE from GCSS shipments in SIP QUARTER where Contractual
+            Customer is in the SIP Participant’s territory with Sales Control
+            Scope, or Contractual Customer is related to Concern in the SIP
+            Participant’s territory with Global Account Owner Scope. Max Length
+            18 digits including 1 decimal place.
+          example: 1
+        Landside_Trans_VP_Actual_FFE_YTD__c:
+          type: number
+          description: >-
+            Basis GCSS shipments in ALL QUARTERS YTD where Contractual Customer
+            is in the SIP Participant’s territory with Sales Control Scope, or
+            Contractual Customer is related to Concern in the SIP Participant’s
+            territory with Global Account Owner Scope.
+          maximum: 18
+          example: 10
+        Maersk_Spot_Volume_Actual_FFE__c:
+          type: number
+          description: >-
+            Source, Bi data. If Export volumes, credit goes to the Booking
+            Party. If Import volumes,credit goes to the Consignee.
+          maxLength: 18
+          example: 10
+        Acquisition_Actual__c:
+          type: number
+          description: >-
+            Source: Pulse. E2E Counts: Origin = 1, Container = 1, Destination =
+            1
+          maxLength: 18
+          example: 1
+        Ocean_Revenue_Controlled_Actual_USD__c:
+          type: number
+          description: >-
+            Revenue based on GCSS Contractual customer found in the SIP
+            Participant’s territory with Scope set as Sales Control, or GCSS
+            Contractual Customer is related to a Concern in the SIP
+            Participant’s territory with Scope set as Global Account Owner.
+          maxLength: 18
+          example: 10
+        Ocean_Revenue_Influencer_Actual_USD__c:
+          type: number
+          description: >-
+            Revenue based on GCSS Contractual Customer or Concern Code found in
+            the SIP Participant’s territory and with Scope set to a value
+            matching the export/import geography of the shipment.
+          maxLength: 18
+          example: 10
+        Ocean_Volume_Controlled_Actual_FFE__c:
+          type: number
+          description: >-
+            Volume based on GCSS Contractual customer found in the SIP
+            Participant’s territory with Scope set as Sales Control, or GCSS
+            Contractual Customer is related to a Concern in the SIP
+            Participant’s territory with Scope set as Global Account Owner.
+          maxLength: 18
+          example: 10
+        Ocean_Volume_Influencer_Actual_FFE__c:
+          type: number
+          description: >-
+            Volume based on GCSS Contractual Customer or Concern Code found in
+            the SIP Participant’s territory and with Scope set to a value
+            matching the export/import geography of the shipment
+          maxLength: 18
+          example: 10
+        Other_L_S_GP_Actual_USD_Quarterly__c:
+          type: number
+          description: >-
+            GP scheduled in SIP QUARTER from Won Opportunities closed in 2020 or
+            after & owned by SIP Participant OR related to an account where SIP
+            Participant is Global Account Owner. Includes all L&S products
+            except Landside Trans & VP.
+          maxLength: 18
+          example: 10
+        Revenue_Growth_VAS_Actual__c:
+          type: number
+          description: 'Scheduled, SFDC Closed Won Opportunity Gross Profit L&S (USD)'
+          maxLength: 18
+          example: 10
+    patchSIPResponse:
+      type: object
+      required:
+        - Status
+      properties:
+        Status:
+          type: string
+          example: Success
+    ApiError:
+      type: object
+      required:
+        - message
+        - errorcode
+      properties:
+        message:
+          type: string
+          description: High level error message.
+        errorcode:
+          type: string
+          description: High level error code.
