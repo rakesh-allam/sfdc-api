@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: This is to update SIP records in salesforce
-  version: 1.0.0
+  version: 3.0.0
   title: sales_sip
   contact:
     name: Salesforce Sales Cloud
@@ -10,7 +10,24 @@ info:
     name: Maersk
   x-proxy-name: sales_sip
   x-availability-status: General Availability
-  x-oas-href: 
+  x-oas-href: https://github.com/rakesh-allam/sfdc-api/blob/main/sales-sip
+  x-docs-href: https://confluence.maerskdev.net/display/Salesforce/Maersk+API+Management+Catalog
+  x-business-owner-email: elia.montgomery@maersk.com
+  x-product-owner-email: karim.fawzy@maersk.com
+  x-technical-owner-email: jonathan.dobbs@maersk.com
+  x-platform: Order Handling
+  x-published-for: internal
+  x-supply-chain-area: Export - Production
+  x-support-l1: SFDC Build L4
+  x-support-l2: SFDC Build L4
+  x-support-l3: SFDC Build L4
+  x-avg-data-currency-mins: 60
+  x-backend-systems: GCSS
+  x-api-platform: Google Apigee
+  x-visibility: public
+  x-deprecated-by:
+  x-brand: maersk
+  x-layer: process
   
   
 paths:
@@ -50,7 +67,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
         '404':
-          description: Not Found	
+          description: Not Found  
           content:
             application/json:
               schema:
